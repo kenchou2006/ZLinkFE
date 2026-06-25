@@ -46,3 +46,7 @@ Thumbs.db
 
 # Local Claude preview config
 .claude/
+
+# Generated at build/start time from API_BASE (see scripts/generate-config.mjs).
+# Never commit a real backend URL here.
+/public/config.json
