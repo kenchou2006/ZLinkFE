@@ -78,6 +78,24 @@ A `vercel.json` is included with an SPA rewrite (all routes → `index.html`).
   not rebuild automatically when you only edit environment variables.
 - Verify with `curl https://your-domain/config.json` after deploying.
 
+## Deploying to GitHub Pages
+
+`.github/workflows/deploy-gh-pages.yml` builds and deploys on every push to
+`main` (or manually via "Run workflow").
+
+- GitHub Pages project sites are served from `/<repo-name>/`, not the domain
+  root, so the workflow derives the repo name from `$GITHUB_REPOSITORY` and
+  builds with `--base-href "/<repo-name>/"` — no manual configuration needed
+  even if the repo gets renamed or forked.
+- `index.html` is copied to `404.html` after the build as the SPA fallback
+  (GitHub Pages has no rewrite rules), and `.nojekyll` is added so GitHub
+  serves the output as-is.
+- Optionally set an **`API_BASE` repository variable** (Settings → Secrets
+  and variables → Actions → Variables) to bake in a backend URL; left unset,
+  the app falls back to the in-app setup screen.
+- One-time setup: in the repo's Settings → Pages, set **Source** to "GitHub
+  Actions".
+
 ## Pages
 
 | Route | Page | Access |
