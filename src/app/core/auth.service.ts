@@ -1,0 +1,74 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { ConfigService } from './config.service';
+import { LoginResponse, User } from './models';
+
+const ACCESS_KEY = 'zlink_access';
+const REFRESH_KEY = 'zlink_refresh';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private http = inject(HttpClient);
+  private config = inject(ConfigService);
+  private get base() {
+    return this.config.apiBase;
+  }
+
+  readonly user = signal<User | null>(null);
+  readonly isAuthenticated = computed(() => this.user() !== null);
+  readonly isSuperuser = computed(() => this.user()?.is_superuser ?? false);
+
+  get accessToken(): string | null {
+    return localStorage.getItem(ACCESS_KEY);
+  }
+  get refreshToken(): string | null {
+    return localStorage.getItem(REFRESH_KEY);
+  }
+
+  login(username: string, password: string): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${this.base}/auth/login/`, { username, password })
+      .pipe(
+        tap((res) => {
+          localStorage.setItem(ACCESS_KEY, res.access);
+          localStorage.setItem(REFRESH_KEY, res.refresh);
+          this.user.set(res.user);
+        })
+      );
+  }
+
+  refresh(): Observable<{ access: string }> {
+    return this.http
+      .post<{ access: string }>(`${this.base}/auth/refresh/`, { refresh: this.refreshToken })
+      .pipe(tap((res) => localStorage.setItem(ACCESS_KEY, res.access)));
+  }
+
+  /** Load the current user; used by the bootstrap guard on refresh. */
+  loadMe(): Observable<User> {
+    return this.http
+      .get<User>(`${this.base}/auth/me/`)
+      .pipe(tap((u) => this.user.set(u)));
+  }
+
+  logout(): void {
+    const refresh = this.refreshToken;
+    if (refresh) {
+      this.http.post(`${this.base}/auth/logout/`, { refresh }).subscribe({
+        next: () => {},
+        error: () => {},
+      });
+    }
+    this.clear();
+  }
+
+  clear(): void {
+    localStorage.removeItem(ACCESS_KEY);
+    localStorage.removeItem(REFRESH_KEY);
+    this.user.set(null);
+  }
+
+  setAccess(token: string): void {
+    localStorage.setItem(ACCESS_KEY, token);
+  }
+}

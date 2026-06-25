@@ -1,0 +1,50 @@
+@if (created(); as key) {
+  <h2 mat-dialog-title>API key created</h2>
+  <mat-dialog-content>
+    <p class="warn-text">
+      <mat-icon>warning</mat-icon>
+      Copy this key now — it won't be shown again.
+    </p>
+    <div class="key-box">
+      <code>{{ key.key }}</code>
+      <button mat-icon-button (click)="copy()" [attr.aria-label]="'Copy key'">
+        <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+      </button>
+    </div>
+    <p class="hint">
+      Use it in the <code>X-API-Key</code> header when calling <code>/api/links/</code>.
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="done()">Done</button>
+  </mat-dialog-actions>
+} @else {
+  <h2 mat-dialog-title>Create API key</h2>
+  <mat-dialog-content>
+    <form [formGroup]="form" class="dialog-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="e.g. external-app" />
+      </mat-form-field>
+
+      <mat-checkbox formControlName="neverExpires">Never expires</mat-checkbox>
+
+      @if (!form.controls.neverExpires.value) {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Expires at</mat-label>
+          <input matInput type="datetime-local" formControlName="expiresAt" />
+        </mat-form-field>
+      }
+
+      @if (error()) {
+        <p style="color: var(--mat-sys-error); margin: 0;">{{ error() }}</p>
+      }
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="null">Cancel</button>
+    <button mat-flat-button color="primary" (click)="save()" [disabled]="saving() || form.invalid">
+      Create
+    </button>
+  </mat-dialog-actions>
+}

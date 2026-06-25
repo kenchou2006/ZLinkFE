@@ -1,0 +1,50 @@
+.shell {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 240px;
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.active-link {
+  background: var(--mat-sys-secondary-container);
+}
+
+.group-toggle {
+  cursor: pointer;
+}
+
+// The list "meta" slot applies the small Roboto text style, which breaks the
+// Material Icons ligature. Restore the icon font for the chevron.
+.group-toggle mat-icon[matListItemMeta] {
+  font-family: 'Material Icons' !important;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.sub-item {
+  padding-left: 16px;
+  --mat-list-list-item-leading-icon-start-space: 32px;
+}
+
+main {
+  display: block;
+}

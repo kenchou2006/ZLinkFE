@@ -1,0 +1,61 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <div class="brand">
+      <mat-icon>link</mat-icon>
+      <span>ZLink</span>
+    </div>
+    <mat-nav-list>
+      @for (item of navItems; track item.path) {
+        <a mat-list-item [routerLink]="item.path" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+
+      @if (manageItems().length) {
+        <a mat-list-item (click)="toggleManage()" class="group-toggle">
+          <mat-icon matListItemIcon>tune</mat-icon>
+          <span matListItemTitle>Manage</span>
+          <mat-icon matListItemMeta>{{ manageOpen() ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </a>
+        @if (manageOpen()) {
+          @for (item of manageItems(); track item.path) {
+            <a mat-list-item [routerLink]="item.path" routerLinkActive="active-link" class="sub-item">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label }}</span>
+            </a>
+          }
+        }
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="topbar">
+      <span class="spacer"></span>
+
+      <button mat-icon-button (click)="toggleTheme()" [attr.aria-label]="'Toggle theme'">
+        <mat-icon>{{ theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+        {{ user()?.username }}
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <a mat-menu-item routerLink="/settings/profile">
+          <mat-icon>person</mat-icon>
+          <span>Profile</span>
+        </a>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <main>
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

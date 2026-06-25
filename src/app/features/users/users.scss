@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.you {
+  color: var(--mat-sys-primary);
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
+.actions-col {
+  text-align: right;
+  white-space: nowrap;
+}
