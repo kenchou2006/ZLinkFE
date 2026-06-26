@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,6 +29,7 @@ function isExpired(k: ApiKey): boolean {
     MatIconModule,
     MatProgressBarModule,
     MatTooltipModule,
+    TranslatePipe,
   ],
   templateUrl: './apikeys.html',
   styleUrl: './apikeys.scss',

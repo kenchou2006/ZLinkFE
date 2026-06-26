@@ -6,22 +6,22 @@
     <mat-card-header>
       <mat-card-title>
         <mat-icon class="brand-icon">settings_ethernet</mat-icon>
-        Connect to API
+        {{ 'SETUP.TITLE' | translate }}
       </mat-card-title>
-      <mat-card-subtitle>Enter the ZLink API endpoint to get started</mat-card-subtitle>
+      <mat-card-subtitle>{{ 'SETUP.SUBTITLE' | translate }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="save()">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>API base URL</mat-label>
+          <mat-label>{{ 'SETUP.API_BASE' | translate }}</mat-label>
           <input matInput formControlName="apiBase" placeholder="https://api.example.com/api" />
-          <mat-hint>Include the /api path. No trailing slash needed.</mat-hint>
+          <mat-hint>{{ 'SETUP.API_HINT' | translate }}</mat-hint>
         </mat-form-field>
 
         <button mat-flat-button color="primary" class="full-width" type="submit"
                 [disabled]="testing() || form.invalid">
-          Test & save
+          {{ 'SETUP.TEST_SAVE' | translate }}
         </button>
       </form>
     </mat-card-content>

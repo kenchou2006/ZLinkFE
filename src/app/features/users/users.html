@@ -1,17 +1,17 @@
 <div class="page">
   <div class="header">
-    <h1>Users</h1>
+    <h1>{{ 'USERS.TITLE' | translate }}</h1>
     <button mat-flat-button color="primary" (click)="openCreate()">
       <mat-icon>person_add</mat-icon>
-      New user
+      {{ 'USERS.NEW_USER' | translate }}
     </button>
   </div>
 
   @if (stats(); as s) {
     <div class="stats">
-      <span>Total: <strong>{{ s.total }}</strong></span>
-      <span>Active: <strong>{{ s.active }}</strong></span>
-      <span>Superusers: <strong>{{ s.superusers }}</strong></span>
+      <span>{{ 'USERS.TOTAL' | translate }}: <strong>{{ s.total }}</strong></span>
+      <span>{{ 'USERS.ACTIVE' | translate }}: <strong>{{ s.active }}</strong></span>
+      <span>{{ 'USERS.SUPERUSERS' | translate }}: <strong>{{ s.superusers }}</strong></span>
     </div>
   }
 
@@ -21,41 +21,41 @@
 
   <table mat-table [dataSource]="data()" class="full-width">
     <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef>Username</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'USERS.COL_USERNAME' | translate }}</th>
       <td mat-cell *matCellDef="let u">
         {{ u.username }}
-        @if (isSelf(u)) { <span class="you">(you)</span> }
+        @if (isSelf(u)) { <span class="you">{{ 'USERS.YOU' | translate }}</span> }
       </td>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'USERS.COL_EMAIL' | translate }}</th>
       <td mat-cell *matCellDef="let u">{{ u.email || '—' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'USERS.COL_ROLE' | translate }}</th>
       <td mat-cell *matCellDef="let u">
-        {{ u.is_superuser ? 'Superuser' : (u.is_staff ? 'Staff' : 'User') }}
+        {{ u.is_superuser ? ('USERS.ROLE_SUPERUSER' | translate) : (u.is_staff ? ('USERS.ROLE_STAFF' | translate) : ('USERS.ROLE_USER' | translate)) }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let u">{{ u.is_active ? 'Active' : 'Inactive' }}</td>
+      <th mat-header-cell *matHeaderCellDef>{{ 'USERS.COL_STATUS' | translate }}</th>
+      <td mat-cell *matCellDef="let u">{{ u.is_active ? ('USERS.STATUS_ACTIVE' | translate) : ('USERS.STATUS_INACTIVE' | translate) }}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef class="actions-col">Actions</th>
+      <th mat-header-cell *matHeaderCellDef class="actions-col">{{ 'USERS.COL_ACTIONS' | translate }}</th>
       <td mat-cell *matCellDef="let u" class="actions-col">
-        <button mat-icon-button matTooltip="Edit" (click)="openEdit(u)">
+        <button mat-icon-button [matTooltip]="'USERS.TOOLTIP_EDIT' | translate" (click)="openEdit(u)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button [matTooltip]="u.is_active ? 'Deactivate' : 'Activate'"
+        <button mat-icon-button [matTooltip]="u.is_active ? ('USERS.TOOLTIP_DEACTIVATE' | translate) : ('USERS.TOOLTIP_ACTIVATE' | translate)"
                 [disabled]="isSelf(u) || u.is_superuser" (click)="toggle(u)">
           <mat-icon>{{ u.is_active ? 'toggle_on' : 'toggle_off' }}</mat-icon>
         </button>
-        <button mat-icon-button color="warn" matTooltip="Delete"
+        <button mat-icon-button color="warn" [matTooltip]="'USERS.TOOLTIP_DELETE' | translate"
                 [disabled]="isSelf(u)" (click)="remove(u)">
           <mat-icon>delete</mat-icon>
         </button>

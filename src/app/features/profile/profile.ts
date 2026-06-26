@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +21,7 @@ import { apiError } from '../../shared/api-error';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    TranslatePipe,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',

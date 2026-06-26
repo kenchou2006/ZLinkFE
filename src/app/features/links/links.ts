@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -31,6 +32,7 @@ import { LinkDialog } from './link-dialog';
     MatInputModule,
     MatProgressBarModule,
     MatTooltipModule,
+    TranslatePipe,
   ],
   templateUrl: './links.html',
   styleUrl: './links.scss',

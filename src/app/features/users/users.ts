@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -23,6 +24,7 @@ import { UserDialog } from './user-dialog';
     MatChipsModule,
     MatProgressBarModule,
     MatTooltipModule,
+    TranslatePipe,
   ],
   templateUrl: './users.html',
   styleUrl: './users.scss',

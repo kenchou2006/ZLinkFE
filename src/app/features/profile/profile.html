@@ -1,45 +1,45 @@
 <div class="page narrow">
-  <h1>Profile</h1>
+  <h1>{{ 'PROFILE.TITLE' | translate }}</h1>
 
   <form [formGroup]="form" (ngSubmit)="save()">
     <mat-card>
-      <mat-card-header><mat-card-title>Account</mat-card-title></mat-card-header>
+      <mat-card-header><mat-card-title>{{ 'PROFILE.ACCOUNT' | translate }}</mat-card-title></mat-card-header>
       <mat-card-content>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
+          <mat-label>{{ 'PROFILE.USERNAME' | translate }}</mat-label>
           <input matInput formControlName="username" />
         </mat-form-field>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
+          <mat-label>{{ 'PROFILE.EMAIL' | translate }}</mat-label>
           <input matInput formControlName="email" type="email" />
         </mat-form-field>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Avatar URL</mat-label>
+          <mat-label>{{ 'PROFILE.AVATAR_URL' | translate }}</mat-label>
           <input matInput formControlName="avatar_url" />
         </mat-form-field>
       </mat-card-content>
     </mat-card>
 
     <mat-card class="mt">
-      <mat-card-header><mat-card-title>Change password</mat-card-title></mat-card-header>
+      <mat-card-header><mat-card-title>{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</mat-card-title></mat-card-header>
       <mat-card-content>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Current password</mat-label>
+          <mat-label>{{ 'PROFILE.CURRENT_PASSWORD' | translate }}</mat-label>
           <input matInput type="password" formControlName="current_password" autocomplete="current-password" />
         </mat-form-field>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>New password</mat-label>
+          <mat-label>{{ 'PROFILE.NEW_PASSWORD' | translate }}</mat-label>
           <input matInput type="password" formControlName="new_password" autocomplete="new-password" />
         </mat-form-field>
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Confirm new password</mat-label>
+          <mat-label>{{ 'PROFILE.CONFIRM_NEW_PASSWORD' | translate }}</mat-label>
           <input matInput type="password" formControlName="confirm_password" autocomplete="new-password" />
         </mat-form-field>
       </mat-card-content>
     </mat-card>
 
     <div class="actions">
-      <button mat-flat-button color="primary" type="submit" [disabled]="saving()">Save changes</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="saving()">{{ 'PROFILE.SAVE' | translate }}</button>
     </div>
   </form>
 </div>

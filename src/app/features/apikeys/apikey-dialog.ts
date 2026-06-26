@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +22,7 @@ import { apiError } from '../../shared/api-error';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
+    TranslatePipe,
   ],
   templateUrl: './apikey-dialog.html',
   styles: [`

@@ -17,14 +17,14 @@
           (click)="closeOnMobile(sidenav)"
         >
           <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-          <span matListItemTitle>{{ item.label }}</span>
+          <span matListItemTitle>{{ item.label | translate }}</span>
         </a>
       }
 
       @if (manageItems().length) {
         <a mat-list-item (click)="toggleManage()" class="group-toggle">
           <mat-icon matListItemIcon>tune</mat-icon>
-          <span matListItemTitle>Manage</span>
+          <span matListItemTitle>{{ 'SHELL.MANAGE' | translate }}</span>
           <mat-icon matListItemMeta>{{ manageOpen() ? 'expand_less' : 'expand_more' }}</mat-icon>
         </a>
         @if (manageOpen()) {
@@ -37,7 +37,7 @@
               (click)="closeOnMobile(sidenav)"
             >
               <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-              <span matListItemTitle>{{ item.label }}</span>
+              <span matListItemTitle>{{ item.label | translate }}</span>
             </a>
           }
         }
@@ -68,32 +68,48 @@
       <mat-menu #userMenu="matMenu">
         <a mat-menu-item routerLink="/settings/profile">
           <mat-icon>person</mat-icon>
-          <span>Profile</span>
+          <span>{{ 'SHELL.PROFILE' | translate }}</span>
         </a>
 
         <button mat-menu-item [matMenuTriggerFor]="themeMenu">
           <mat-icon>{{ themeMode() === 'system' ? 'desktop_windows' : (themeMode() === 'dark' ? 'dark_mode' : 'light_mode') }}</mat-icon>
-          <span>Theme</span>
+          <span>{{ 'SHELL.THEME' | translate }}</span>
+        </button>
+
+        <button mat-menu-item [matMenuTriggerFor]="langMenu">
+          <mat-icon>language</mat-icon>
+          <span>{{ 'SHELL.LANGUAGE' | translate }}</span>
         </button>
 
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
-          <span>Logout</span>
+          <span>{{ 'SHELL.LOGOUT' | translate }}</span>
         </button>
       </mat-menu>
 
       <mat-menu #themeMenu="matMenu">
         <button mat-menu-item (click)="setTheme('light')">
           <mat-icon>light_mode</mat-icon>
-          <span>Light</span>
+          <span>{{ 'SHELL.THEME_LIGHT' | translate }}</span>
         </button>
         <button mat-menu-item (click)="setTheme('dark')">
           <mat-icon>dark_mode</mat-icon>
-          <span>Dark</span>
+          <span>{{ 'SHELL.THEME_DARK' | translate }}</span>
         </button>
         <button mat-menu-item (click)="setTheme('system')">
           <mat-icon>desktop_windows</mat-icon>
-          <span>System</span>
+          <span>{{ 'SHELL.THEME_SYSTEM' | translate }}</span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #langMenu="matMenu">
+        <button mat-menu-item (click)="setLanguage('en')">
+          <mat-icon>{{ currentLang === 'en' ? 'check' : '' }}</mat-icon>
+          <span>{{ 'SHELL.LANG_EN' | translate }}</span>
+        </button>
+        <button mat-menu-item (click)="setLanguage('zh-TW')">
+          <mat-icon>{{ currentLang === 'zh-TW' ? 'check' : '' }}</mat-icon>
+          <span>{{ 'SHELL.LANG_ZH_TW' | translate }}</span>
         </button>
       </mat-menu>
     </mat-toolbar>

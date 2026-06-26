@@ -68,16 +68,14 @@
               "buildTarget": "ZLinkFE:build:production",
               "allowedHosts": [
                 "localhost",
-                "127.0.0.1",
-                "universal-officer-fellow-limiting.trycloudflare.com"
+                "127.0.0.1"
               ]
             },
             "development": {
               "buildTarget": "ZLinkFE:build:development",
               "allowedHosts": [
                 "localhost",
-                "127.0.0.1",
-                "universal-officer-fellow-limiting.trycloudflare.com"
+                "127.0.0.1"
               ]
             }
           },

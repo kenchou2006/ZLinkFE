@@ -9,16 +9,18 @@ export interface ConfirmData {
   destructive?: boolean;
 }
 
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-confirm-dialog',
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, TranslatePipe],
   template: `
     <h2 mat-dialog-title>{{ data.title }}</h2>
     <mat-dialog-content>{{ data.message }}</mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button [mat-dialog-close]="false">Cancel</button>
+      <button mat-button [mat-dialog-close]="false">{{ 'COMMON.CANCEL' | translate }}</button>
       <button mat-flat-button [color]="data.destructive ? 'warn' : 'primary'" [mat-dialog-close]="true">
-        {{ data.confirmText ?? 'Confirm' }}
+        {{ data.confirmText ?? ('COMMON.CONFIRM' | translate) }}
       </button>
     </mat-dialog-actions>
   `,

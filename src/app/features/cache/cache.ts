@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,6 +20,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog';
     MatIconModule,
     MatProgressBarModule,
     MatTooltipModule,
+    TranslatePipe,
   ],
   templateUrl: './cache.html',
   styleUrl: './cache.scss',

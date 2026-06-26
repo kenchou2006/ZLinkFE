@@ -8,9 +8,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { ThemeMode, ThemeService } from '../../core/theme.service';
+import { I18nService } from '../../core/i18n.service';
 
 interface NavItem {
   label: string;
@@ -31,6 +33,7 @@ interface NavItem {
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
+    TranslatePipe,
   ],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',
@@ -40,6 +43,7 @@ export class Shell {
   private themeSvc = inject(ThemeService);
   private router = inject(Router);
   private breakpoints = inject(BreakpointObserver);
+  private i18n = inject(I18nService);
 
   readonly user = this.auth.user;
   readonly themeMode = this.themeSvc.mode;
@@ -53,13 +57,13 @@ export class Shell {
   );
 
   // Top-level items. Profile lives in the top-right user menu only.
-  private topItems: NavItem[] = [{ label: 'Links', icon: 'link', path: '/links' }];
+  private topItems: NavItem[] = [{ label: 'SHELL.LINKS', icon: 'link', path: '/links' }];
 
   // Items grouped under the "Manage" section.
   private manageGroup: NavItem[] = [
-    { label: 'API Keys', icon: 'vpn_key', path: '/settings/api-keys' },
-    { label: 'Users', icon: 'group', path: '/settings/users', superuserOnly: true },
-    { label: 'Cache', icon: 'memory', path: '/settings/cache', superuserOnly: true },
+    { label: 'SHELL.API_KEYS', icon: 'vpn_key', path: '/settings/api-keys' },
+    { label: 'SHELL.USERS', icon: 'group', path: '/settings/users', superuserOnly: true },
+    { label: 'SHELL.CACHE', icon: 'memory', path: '/settings/cache', superuserOnly: true },
   ];
 
   readonly navItems = this.topItems;
@@ -81,6 +85,14 @@ export class Shell {
 
   setTheme(m: ThemeMode): void {
     this.themeSvc.setMode(m);
+  }
+
+  setLanguage(lang: string): void {
+    this.i18n.setLanguage(lang);
+  }
+
+  get currentLang(): string {
+    return this.i18n.currentLang;
   }
 
   logout(): void {

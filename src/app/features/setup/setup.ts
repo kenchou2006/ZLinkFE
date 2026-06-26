@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -22,6 +23,7 @@ import { ConfigService } from '../../core/config.service';
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
+    TranslatePipe,
   ],
   templateUrl: './setup.html',
   styleUrl: './setup.scss',

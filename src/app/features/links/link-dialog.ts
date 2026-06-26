@@ -1,3 +1,4 @@
+import { TranslatePipe } from '@ngx-translate/core';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +27,7 @@ function toLocalInput(iso: string): string {
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
+    TranslatePipe,
   ],
   templateUrl: './link-dialog.html',
 })
