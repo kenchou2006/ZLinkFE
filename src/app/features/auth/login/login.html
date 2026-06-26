@@ -25,10 +25,6 @@
           <mat-icon matSuffix>lock</mat-icon>
         </mat-form-field>
 
-        @if (error()) {
-          <p class="error">{{ error() }}</p>
-        }
-
         <button mat-flat-button color="primary" class="full-width" type="submit"
                 [disabled]="loading() || form.invalid">
           Sign in

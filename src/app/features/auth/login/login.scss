@@ -9,7 +9,14 @@
 .login-card {
   width: 100%;
   max-width: 400px;
-  overflow: hidden;
+  // Do NOT set overflow: hidden — the mat-form-field floating label needs to
+  // render above the input border (outside the card content bounds) when focused.
+}
+
+// Give the form fields room so the floating labels have space to float above
+// the outline border without being visually clipped by the card edge.
+mat-card-content {
+  padding-top: 8px !important;
 }
 
 mat-card-header {
@@ -25,10 +32,4 @@ form {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.error {
-  color: var(--mat-sys-error);
-  margin: 0 0 8px;
-  font-size: 0.875rem;
 }

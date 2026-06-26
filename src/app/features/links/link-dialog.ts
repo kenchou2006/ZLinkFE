@@ -5,6 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LinksService } from '../../core/api/links.service';
 import { Link } from '../../core/models';
 import { apiError } from '../../shared/api-error';
@@ -32,10 +33,10 @@ export class LinkDialog {
   private fb = inject(FormBuilder);
   private links = inject(LinksService);
   private ref = inject(MatDialogRef<LinkDialog>);
+  private snack = inject(MatSnackBar);
   data = inject<Link | null>(MAT_DIALOG_DATA);
 
   saving = signal(false);
-  error = signal<string | null>(null);
   isEdit = !!this.data;
 
   form = this.fb.nonNullable.group({
@@ -49,11 +50,10 @@ export class LinkDialog {
     if (this.form.invalid) return;
     const { original_url, short_code, neverExpires, expiresAt } = this.form.getRawValue();
     if (!neverExpires && !expiresAt) {
-      this.error.set('Pick an expiry date or choose "Never expires".');
+      this.snack.open('Pick an expiry date or choose "Never expires".', 'Dismiss', { duration: 4000 });
       return;
     }
     this.saving.set(true);
-    this.error.set(null);
     const payload = {
       original_url,
       short_code,
@@ -66,7 +66,7 @@ export class LinkDialog {
       next: (link) => this.ref.close(link),
       error: (e) => {
         this.saving.set(false);
-        this.error.set(apiError(e, 'Could not save link.'));
+        this.snack.open(apiError(e, 'Could not save link.'), 'Dismiss', { duration: 4000 });
       },
     });
   }

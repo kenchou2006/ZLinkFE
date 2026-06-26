@@ -5,6 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from '../../core/api/users.service';
 import { AuthService } from '../../core/auth.service';
 import { User } from '../../core/models';
@@ -27,10 +28,10 @@ export class UserDialog {
   private users = inject(UsersService);
   private auth = inject(AuthService);
   private ref = inject(MatDialogRef<UserDialog>);
+  private snack = inject(MatSnackBar);
   data = inject<User | null>(MAT_DIALOG_DATA);
 
   saving = signal(false);
-  error = signal<string | null>(null);
   isEdit = !!this.data;
   isSelf = this.data?.id === this.auth.user()?.id;
 
@@ -45,7 +46,6 @@ export class UserDialog {
   save(): void {
     if (this.form.invalid) return;
     this.saving.set(true);
-    this.error.set(null);
     const v = this.form.getRawValue();
 
     if (this.isEdit) {
@@ -82,7 +82,7 @@ export class UserDialog {
 
   private fail(e: unknown): void {
     this.saving.set(false);
-    this.error.set(apiError(e, 'Could not save user.'));
+    this.snack.open(apiError(e, 'Could not save user.'), 'Dismiss', { duration: 4000 });
   }
 
   get canEditSuperuser(): boolean {

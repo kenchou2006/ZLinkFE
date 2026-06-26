@@ -1,12 +1,21 @@
 <mat-sidenav-container class="shell">
-  <mat-sidenav mode="side" opened class="sidenav">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="!isMobile()"
+    class="sidenav"
+  >
     <div class="brand">
-      <mat-icon>link</mat-icon>
       <span>ZLink</span>
     </div>
     <mat-nav-list>
       @for (item of navItems; track item.path) {
-        <a mat-list-item [routerLink]="item.path" routerLinkActive="active-link">
+        <a
+          mat-list-item
+          [routerLink]="item.path"
+          routerLinkActive="active-link"
+          (click)="closeOnMobile(sidenav)"
+        >
           <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
           <span matListItemTitle>{{ item.label }}</span>
         </a>
@@ -20,7 +29,13 @@
         </a>
         @if (manageOpen()) {
           @for (item of manageItems(); track item.path) {
-            <a mat-list-item [routerLink]="item.path" routerLinkActive="active-link" class="sub-item">
+            <a
+              mat-list-item
+              [routerLink]="item.path"
+              routerLinkActive="active-link"
+              class="sub-item"
+              (click)="closeOnMobile(sidenav)"
+            >
               <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
               <span matListItemTitle>{{ item.label }}</span>
             </a>
@@ -32,6 +47,13 @@
 
   <mat-sidenav-content>
     <mat-toolbar color="primary" class="topbar">
+      @if (isMobile()) {
+        <button mat-icon-button (click)="sidenav.toggle()" [attr.aria-label]="'Toggle navigation'">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="brand-compact">ZLink</span>
+      }
+
       <span class="spacer"></span>
 
       <button mat-icon-button (click)="toggleTheme()" [attr.aria-label]="'Toggle theme'">

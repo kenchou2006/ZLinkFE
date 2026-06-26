@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>{{ isEdit ? 'Edit user' : 'Create user' }}</h2>
 <mat-dialog-content>
   <form [formGroup]="form" class="dialog-form">
+    <h3 style="margin-bottom: 4px; margin-top: 0;">Profile</h3>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Username</mat-label>
       <input matInput formControlName="username" />
@@ -11,6 +12,7 @@
       <input matInput type="email" formControlName="email" />
     </mat-form-field>
 
+    <h3 style="margin-bottom: 4px; margin-top: 8px;">Password</h3>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>{{ isEdit ? 'New password (optional)' : 'Password' }}</mat-label>
       <input matInput type="password" formControlName="password" autocomplete="new-password" />
@@ -23,10 +25,6 @@
 
     @if (canEditSuperuser) {
       <mat-checkbox formControlName="is_superuser">Superuser</mat-checkbox>
-    }
-
-    @if (error()) {
-      <p style="color: var(--mat-sys-error); margin: 8px 0 0;">{{ error() }}</p>
     }
   </form>
 </mat-dialog-content>

@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '../../core/config.service';
@@ -30,9 +31,9 @@ export class Setup {
   private config = inject(ConfigService);
   private http = inject(HttpClient);
   private router = inject(Router);
+  private snack = inject(MatSnackBar);
 
   testing = signal(false);
-  error = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
     apiBase: [this.config.apiBase || 'http://localhost:8000/api', [Validators.required]],
@@ -41,7 +42,6 @@ export class Setup {
   async save(): Promise<void> {
     if (this.form.invalid) return;
     this.testing.set(true);
-    this.error.set(null);
     const base = this.form.getRawValue().apiBase.trim().replace(/\/+$/, '');
 
     try {
@@ -50,8 +50,10 @@ export class Setup {
       this.config.setApiBase(base);
       this.router.navigate(['/login']);
     } catch {
-      this.error.set(
-        `Could not reach ${base}/healthz/. Check the URL and that the API allows this origin (CORS).`
+      this.snack.open(
+        `Could not reach ${base}/healthz/. Check the URL and that the API allows this origin (CORS).`,
+        'Dismiss',
+        { duration: 6000 },
       );
     } finally {
       this.testing.set(false);

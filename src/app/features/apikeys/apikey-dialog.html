@@ -35,10 +35,6 @@
           <input matInput type="datetime-local" formControlName="expiresAt" />
         </mat-form-field>
       }
-
-      @if (error()) {
-        <p style="color: var(--mat-sys-error); margin: 0;">{{ error() }}</p>
-      }
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

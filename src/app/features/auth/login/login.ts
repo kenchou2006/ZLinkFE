@@ -6,8 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
+import { apiError } from '../../../shared/api-error';
 
 @Component({
   selector: 'app-login',
@@ -27,9 +29,9 @@ export class Login {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private snack = inject(MatSnackBar);
 
   loading = signal(false);
-  error = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -39,16 +41,15 @@ export class Login {
   submit(): void {
     if (this.form.invalid) return;
     this.loading.set(true);
-    this.error.set(null);
     const { username, password } = this.form.getRawValue();
     this.auth.login(username, password).subscribe({
       next: () => {
         this.loading.set(false);
         this.router.navigate(['/links']);
       },
-      error: () => {
+      error: (e) => {
         this.loading.set(false);
-        this.error.set('Invalid username or password.');
+        this.snack.open(apiError(e, 'Invalid username or password.'), 'Dismiss', { duration: 5000 });
       },
     });
   }

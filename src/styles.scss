@@ -32,3 +32,27 @@ body {
   margin: 0 auto;
   padding: 24px 16px;
 }
+
+// Shared dialog form layout: used by link-dialog, apikey-dialog, user-dialog.
+// Fills the dialog's own width (set per-dialog via MatDialogConfig.width, and
+// capped responsively by Material's default maxWidth on narrow viewports).
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding-top: 8px;
+}
+
+// Pairs related fields (e.g. username/email) on one line; wraps on narrow dialogs.
+.form-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  > mat-form-field {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+}
+

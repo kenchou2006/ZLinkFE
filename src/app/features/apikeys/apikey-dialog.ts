@@ -6,6 +6,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiKeysService } from '../../core/api/apikeys.service';
 import { ApiKeyCreated } from '../../core/models';
 import { apiError } from '../../shared/api-error';
@@ -41,9 +42,9 @@ export class ApiKeyDialog {
   private fb = inject(FormBuilder);
   private keys = inject(ApiKeysService);
   private ref = inject(MatDialogRef<ApiKeyDialog>);
+  private snack = inject(MatSnackBar);
 
   saving = signal(false);
-  error = signal<string | null>(null);
   created = signal<ApiKeyCreated | null>(null);
   copied = signal(false);
 
@@ -57,11 +58,10 @@ export class ApiKeyDialog {
     if (this.form.invalid) return;
     const { name, neverExpires, expiresAt } = this.form.getRawValue();
     if (!neverExpires && !expiresAt) {
-      this.error.set('Please pick an expiry date or choose "Never expires".');
+      this.snack.open('Please pick an expiry date or choose "Never expires".', 'Dismiss', { duration: 4000 });
       return;
     }
     this.saving.set(true);
-    this.error.set(null);
     const expires = neverExpires ? null : new Date(expiresAt).toISOString();
     this.keys.create({ name, expires_at: expires }).subscribe({
       next: (key) => {
@@ -70,7 +70,7 @@ export class ApiKeyDialog {
       },
       error: (e) => {
         this.saving.set(false);
-        this.error.set(apiError(e, 'Could not create API key.'));
+        this.snack.open(apiError(e, 'Could not create API key.'), 'Dismiss', { duration: 4000 });
       },
     });
   }
