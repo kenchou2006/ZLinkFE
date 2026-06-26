@@ -5,6 +5,11 @@
 .sidenav {
   width: 240px;
   border-right: 1px solid var(--mat-sys-outline-variant);
+
+  ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .brand {
@@ -52,4 +57,18 @@
 
 main {
   display: block;
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.user-menu-btn ::ng-deep .mdc-button__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

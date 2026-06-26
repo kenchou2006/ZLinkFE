@@ -38,8 +38,8 @@ export class UserDialog {
   form = this.fb.nonNullable.group({
     username: [this.data?.username ?? '', Validators.required],
     email: [this.data?.email ?? ''],
-    password: [''],
-    confirm_password: [''],
+    password: ['', this.isEdit ? [] : [Validators.required]],
+    confirm_password: ['', this.isEdit ? [] : [Validators.required]],
     is_superuser: [this.data?.is_superuser ?? false],
   });
 

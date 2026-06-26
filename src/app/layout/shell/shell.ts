@@ -10,7 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
-import { ThemeService } from '../../core/theme.service';
+import { ThemeMode, ThemeService } from '../../core/theme.service';
 
 interface NavItem {
   label: string;
@@ -42,7 +42,8 @@ export class Shell {
   private breakpoints = inject(BreakpointObserver);
 
   readonly user = this.auth.user;
-  readonly theme = this.themeSvc.theme;
+  readonly themeMode = this.themeSvc.mode;
+  readonly avatarFailed = signal(false);
 
   // Below tablet width the sidenav becomes an overlay drawer instead of a
   // permanent column, so it doesn't push page content off-screen.
@@ -78,8 +79,8 @@ export class Shell {
     if (this.isMobile()) sidenav.close();
   }
 
-  toggleTheme(): void {
-    this.themeSvc.toggle();
+  setTheme(m: ThemeMode): void {
+    this.themeSvc.setMode(m);
   }
 
   logout(): void {

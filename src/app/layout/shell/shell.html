@@ -43,6 +43,8 @@
         }
       }
     </mat-nav-list>
+
+
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -55,13 +57,12 @@
       }
 
       <span class="spacer"></span>
-
-      <button mat-icon-button (click)="toggleTheme()" [attr.aria-label]="'Toggle theme'">
-        <mat-icon>{{ theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
-      </button>
-
-      <button mat-button [matMenuTriggerFor]="userMenu">
-        <mat-icon>account_circle</mat-icon>
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+        @if (user()?.avatar_url && !avatarFailed()) {
+          <img [src]="user()?.avatar_url" alt="Avatar" class="user-avatar" (error)="avatarFailed.set(true)" />
+        } @else {
+          <mat-icon>account_circle</mat-icon>
+        }
         {{ user()?.username }}
       </button>
       <mat-menu #userMenu="matMenu">
@@ -69,9 +70,30 @@
           <mat-icon>person</mat-icon>
           <span>Profile</span>
         </a>
+
+        <button mat-menu-item [matMenuTriggerFor]="themeMenu">
+          <mat-icon>{{ themeMode() === 'system' ? 'desktop_windows' : (themeMode() === 'dark' ? 'dark_mode' : 'light_mode') }}</mat-icon>
+          <span>Theme</span>
+        </button>
+
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
           <span>Logout</span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #themeMenu="matMenu">
+        <button mat-menu-item (click)="setTheme('light')">
+          <mat-icon>light_mode</mat-icon>
+          <span>Light</span>
+        </button>
+        <button mat-menu-item (click)="setTheme('dark')">
+          <mat-icon>dark_mode</mat-icon>
+          <span>Dark</span>
+        </button>
+        <button mat-menu-item (click)="setTheme('system')">
+          <mat-icon>desktop_windows</mat-icon>
+          <span>System</span>
         </button>
       </mat-menu>
     </mat-toolbar>
