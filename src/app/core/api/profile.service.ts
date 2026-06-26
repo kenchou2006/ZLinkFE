@@ -11,6 +11,7 @@ export interface ProfilePayload {
   current_password?: string;
   new_password?: string;
   confirm_password?: string;
+  password_login_disabled?: boolean;
 }
 
 export interface ProfileUpdateResponse {

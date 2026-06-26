@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
@@ -32,6 +33,7 @@ import { Passkey } from '../../core/models';
     MatButtonModule,
     MatIconModule,
     MatListModule,
+    MatSlideToggleModule,
     MatTooltipModule,
     TranslatePipe,
     DatePipe,
@@ -54,6 +56,8 @@ export class Profile implements OnInit {
   passkeyList = signal<Passkey[]>([]);
   passkeyIcons = signal<Record<string, string>>({});
   addingPasskey = signal(false);
+  passwordLoginDisabled = signal(false);
+  togglingPasswordLogin = signal(false);
   newPasskeyName = '';
 
   form = this.fb.nonNullable.group({
@@ -73,6 +77,7 @@ export class Profile implements OnInit {
         email: u.email,
         avatar_url: u.avatar_url ?? '',
       });
+      this.passwordLoginDisabled.set(u.password_login_disabled);
     }
     if (this.passkeys.isSupported) this.loadPasskeys();
   }
@@ -131,10 +136,37 @@ export class Profile implements OnInit {
       .subscribe((ok) => {
         if (!ok) return;
         this.passkeys.remove(p.id).subscribe({
-          next: () => this.loadPasskeys(),
+          next: () => {
+            this.loadPasskeys();
+            // Removing the last passkey while password login was disabled
+            // re-enables it server-side (lockout safety net) — resync.
+            if (this.passwordLoginDisabled() && this.passkeyList().length <= 1) {
+              this.auth.loadMe().subscribe((u) => this.passwordLoginDisabled.set(u.password_login_disabled));
+            }
+          },
           error: (e) => this.snack.open(apiError(e), 'Dismiss', { duration: 4000 }),
         });
       });
+  }
+
+  togglePasswordLogin(disabled: boolean): void {
+    this.togglingPasswordLogin.set(true);
+    this.profile.update({ password_login_disabled: disabled }).subscribe({
+      next: (res) => {
+        this.togglingPasswordLogin.set(false);
+        this.auth.user.set(res.user);
+        this.passwordLoginDisabled.set(res.user.password_login_disabled);
+        this.snack.open(
+          disabled ? 'Password login disabled.' : 'Password login re-enabled.',
+          undefined,
+          { duration: 2000 },
+        );
+      },
+      error: (e) => {
+        this.togglingPasswordLogin.set(false);
+        this.snack.open(apiError(e, 'Could not update password login setting.'), 'Dismiss', { duration: 4000 });
+      },
+    });
   }
 
   /** e.g. "Google Password Manager", or null if the authenticator isn't recognized. */

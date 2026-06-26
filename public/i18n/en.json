@@ -160,7 +160,10 @@
     "TOOLTIP_DELETE_PASSKEY": "Remove passkey",
     "DELETE_PASSKEY_TITLE": "Remove passkey",
     "DELETE_PASSKEY_MESSAGE": "Remove \"{{ name }}\"? You won't be able to sign in with it anymore.",
-    "NOT_SUPPORTED": "Passkeys aren't supported in this browser."
+    "NOT_SUPPORTED": "Passkeys aren't supported in this browser.",
+    "DISABLE_PASSWORD_LOGIN": "Disable password login",
+    "DISABLE_PASSWORD_LOGIN_HINT": "Require a passkey to sign in to this account.",
+    "DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY": "Add a passkey first to enable this."
   },
   "COMMON": {
     "CANCEL": "Cancel",

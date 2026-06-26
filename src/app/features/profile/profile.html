@@ -59,16 +59,9 @@
                   <mat-icon matListItemIcon>fingerprint</mat-icon>
                 }
                 <span matListItemTitle>{{ p.name }}</span>
-                <span matListItemLine class="passkey-meta">
-                  @if (providerName(p); as provider) {
-                    {{ provider }} ·
-                  }
-                  {{ 'PROFILE.CREATED' | translate: { date: (p.created_at | date: 'short') } }}
-                  ·
-                  {{ p.last_used_at
+                <span matListItemLine class="passkey-meta">{{ providerName(p) ? providerName(p) + ' · ' : '' }}{{ 'PROFILE.CREATED' | translate: { date: (p.created_at | date: 'short') } }} · {{ p.last_used_at
                     ? ('PROFILE.LAST_USED' | translate: { date: (p.last_used_at | date: 'short') })
-                    : ('PROFILE.NEVER_USED' | translate) }}
-                </span>
+                    : ('PROFILE.NEVER_USED' | translate) }}</span>
                 <button
                   matListItemMeta
                   mat-icon-button
@@ -94,6 +87,21 @@
             <mat-icon>add</mat-icon>
             {{ 'PROFILE.ADD_PASSKEY' | translate }}
           </button>
+        </div>
+
+        <div class="disable-password-row">
+          <mat-slide-toggle
+            [checked]="passwordLoginDisabled()"
+            [disabled]="togglingPasswordLogin() || (!passwordLoginDisabled() && !passkeyList().length)"
+            (change)="togglePasswordLogin($event.checked)"
+          >
+            {{ 'PROFILE.DISABLE_PASSWORD_LOGIN' | translate }}
+          </mat-slide-toggle>
+          <p class="hint">
+            {{ (passkeyList().length || passwordLoginDisabled())
+              ? ('PROFILE.DISABLE_PASSWORD_LOGIN_HINT' | translate)
+              : ('PROFILE.DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY' | translate) }}
+          </p>
         </div>
       </mat-card-content>
     </mat-card>

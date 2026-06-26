@@ -7,6 +7,7 @@ export interface User {
   is_active: boolean;
   date_joined: string;
   avatar_url: string | null;
+  password_login_disabled: boolean;
 }
 
 export interface LoginResponse {

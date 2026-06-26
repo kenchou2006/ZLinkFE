@@ -160,7 +160,10 @@
     "TOOLTIP_DELETE_PASSKEY": "移除 Passkey",
     "DELETE_PASSKEY_TITLE": "移除 Passkey",
     "DELETE_PASSKEY_MESSAGE": "移除「{{ name }}」？移除後將無法再用它登入。",
-    "NOT_SUPPORTED": "此瀏覽器不支援 Passkey。"
+    "NOT_SUPPORTED": "此瀏覽器不支援 Passkey。",
+    "DISABLE_PASSWORD_LOGIN": "停用密碼登入",
+    "DISABLE_PASSWORD_LOGIN_HINT": "登入此帳號時將強制要求使用 Passkey。",
+    "DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY": "請先新增一個 Passkey 才能啟用此選項。"
   },
   "COMMON": {
     "CANCEL": "取消",
