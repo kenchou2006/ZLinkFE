@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import { ConfigService } from './config.service';
 
 // Shared refresh state so concurrent 401s wait for a single refresh call.
 let refreshing = false;
@@ -11,18 +12,20 @@ const refreshed$ = new BehaviorSubject<string | null>(null);
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
+  const config = inject(ConfigService);
 
-  // Don't attach tokens to the auth endpoints themselves.
+  // Only attach/refresh tokens for requests to our own API, never third parties.
+  const isOwnApiCall = !!config.apiBase && req.url.startsWith(config.apiBase);
   const isAuthCall = req.url.includes('/auth/login') || req.url.includes('/auth/refresh');
 
   const withAuth = (token: string | null) =>
-    token && !isAuthCall
+    token && isOwnApiCall && !isAuthCall
       ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
       : req;
 
   return next(withAuth(auth.accessToken)).pipe(
     catchError((err: HttpErrorResponse) => {
-      if (err.status !== 401 || isAuthCall || !auth.refreshToken) {
+      if (err.status !== 401 || !isOwnApiCall || isAuthCall || !auth.refreshToken) {
         return throwError(() => err);
       }
 
