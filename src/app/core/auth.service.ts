@@ -38,10 +38,21 @@ export class AuthService {
       );
   }
 
-  refresh(): Observable<{ access: string }> {
+  refresh(): Observable<{ access: string; refresh?: string }> {
     return this.http
-      .post<{ access: string }>(`${this.base}/auth/refresh/`, { refresh: this.refreshToken })
-      .pipe(tap((res) => localStorage.setItem(ACCESS_KEY, res.access)));
+      .post<{ access: string; refresh?: string }>(`${this.base}/auth/refresh/`, {
+        refresh: this.refreshToken,
+      })
+      .pipe(
+        tap((res) => {
+          // ROTATE_REFRESH_TOKENS + BLACKLIST_AFTER_ROTATION means each refresh call
+          // invalidates the old refresh token server-side, so the new one in the
+          // response must replace it — otherwise the *next* refresh fails and logs
+          // the user out, even though this call succeeded.
+          localStorage.setItem(ACCESS_KEY, res.access);
+          if (res.refresh) localStorage.setItem(REFRESH_KEY, res.refresh);
+        })
+      );
   }
 
   /** Load the current user; used by the bootstrap guard on refresh. */
