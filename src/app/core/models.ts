@@ -57,3 +57,11 @@ export interface ApiKey {
 export interface ApiKeyCreated extends ApiKey {
   key: string;
 }
+
+export interface Passkey {
+  id: number;
+  name: string;
+  aaguid: string;
+  created_at: string;
+  last_used_at: string | null;
+}

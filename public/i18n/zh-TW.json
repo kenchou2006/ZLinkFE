@@ -20,7 +20,10 @@
     "SUBTITLE": "登入以管理您的短網址",
     "USERNAME": "帳號",
     "PASSWORD": "密碼",
-    "SIGN_IN": "登入"
+    "SIGN_IN": "登入",
+    "OR": "或",
+    "SIGN_IN_PASSKEY": "使用 Passkey 登入",
+    "PASSKEY_CANCELLED": "已取消 Passkey 登入。"
   },
   "SETUP": {
     "TITLE": "連線至 API",
@@ -145,7 +148,19 @@
     "CURRENT_PASSWORD": "目前密碼",
     "NEW_PASSWORD": "新密碼",
     "CONFIRM_NEW_PASSWORD": "確認新密碼",
-    "SAVE": "儲存變更"
+    "SAVE": "儲存變更",
+    "PASSKEYS": "Passkey",
+    "PASSKEYS_HINT": "使用裝置的指紋、臉部辨識或螢幕鎖定方式登入，不需輸入密碼。",
+    "PASSKEY_NAME_PLACEHOLDER": "例如：MacBook Touch ID",
+    "ADD_PASSKEY": "新增 Passkey",
+    "NO_PASSKEYS": "尚未註冊任何 Passkey。",
+    "CREATED": "建立於 {{ date }}",
+    "LAST_USED": "上次使用 {{ date }}",
+    "NEVER_USED": "尚未使用過",
+    "TOOLTIP_DELETE_PASSKEY": "移除 Passkey",
+    "DELETE_PASSKEY_TITLE": "移除 Passkey",
+    "DELETE_PASSKEY_MESSAGE": "移除「{{ name }}」？移除後將無法再用它登入。",
+    "NOT_SUPPORTED": "此瀏覽器不支援 Passkey。"
   },
   "COMMON": {
     "CANCEL": "取消",

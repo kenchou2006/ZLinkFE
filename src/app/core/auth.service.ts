@@ -29,13 +29,14 @@ export class AuthService {
   login(username: string, password: string): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.base}/auth/login/`, { username, password })
-      .pipe(
-        tap((res) => {
-          localStorage.setItem(ACCESS_KEY, res.access);
-          localStorage.setItem(REFRESH_KEY, res.refresh);
-          this.user.set(res.user);
-        })
-      );
+      .pipe(tap((res) => this.setSession(res)));
+  }
+
+  /** Persist tokens + user from any login-shaped response (password or passkey). */
+  setSession(res: LoginResponse): void {
+    localStorage.setItem(ACCESS_KEY, res.access);
+    localStorage.setItem(REFRESH_KEY, res.refresh);
+    this.user.set(res.user);
   }
 
   refresh(): Observable<{ access: string; refresh?: string }> {

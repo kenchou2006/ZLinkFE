@@ -20,7 +20,10 @@
     "SUBTITLE": "Sign in to manage your short links",
     "USERNAME": "Username",
     "PASSWORD": "Password",
-    "SIGN_IN": "Sign in"
+    "SIGN_IN": "Sign in",
+    "OR": "or",
+    "SIGN_IN_PASSKEY": "Sign in with a passkey",
+    "PASSKEY_CANCELLED": "Passkey sign-in was cancelled."
   },
   "SETUP": {
     "TITLE": "Connect to API",
@@ -145,7 +148,19 @@
     "CURRENT_PASSWORD": "Current password",
     "NEW_PASSWORD": "New password",
     "CONFIRM_NEW_PASSWORD": "Confirm new password",
-    "SAVE": "Save changes"
+    "SAVE": "Save changes",
+    "PASSKEYS": "Passkeys",
+    "PASSKEYS_HINT": "Sign in without a password using your device's fingerprint, face, or screen lock.",
+    "PASSKEY_NAME_PLACEHOLDER": "e.g. MacBook Touch ID",
+    "ADD_PASSKEY": "Add passkey",
+    "NO_PASSKEYS": "No passkeys registered.",
+    "CREATED": "Added {{ date }}",
+    "LAST_USED": "Last used {{ date }}",
+    "NEVER_USED": "Never used",
+    "TOOLTIP_DELETE_PASSKEY": "Remove passkey",
+    "DELETE_PASSKEY_TITLE": "Remove passkey",
+    "DELETE_PASSKEY_MESSAGE": "Remove \"{{ name }}\"? You won't be able to sign in with it anymore.",
+    "NOT_SUPPORTED": "Passkeys aren't supported in this browser."
   },
   "COMMON": {
     "CANCEL": "Cancel",

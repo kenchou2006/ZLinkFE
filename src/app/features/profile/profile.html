@@ -42,4 +42,60 @@
       <button mat-flat-button color="primary" type="submit" [disabled]="saving()">{{ 'PROFILE.SAVE' | translate }}</button>
     </div>
   </form>
+
+  @if (passkeys.isSupported) {
+    <mat-card class="mt">
+      <mat-card-header><mat-card-title>{{ 'PROFILE.PASSKEYS' | translate }}</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <p class="hint">{{ 'PROFILE.PASSKEYS_HINT' | translate }}</p>
+
+        @if (passkeyList().length) {
+          <mat-list>
+            @for (p of passkeyList(); track p.id) {
+              <mat-list-item>
+                @if (icon(p); as iconUrl) {
+                  <img matListItemIcon [src]="iconUrl" alt="" class="passkey-icon" />
+                } @else {
+                  <mat-icon matListItemIcon>fingerprint</mat-icon>
+                }
+                <span matListItemTitle>{{ p.name }}</span>
+                <span matListItemLine class="passkey-meta">
+                  @if (providerName(p); as provider) {
+                    {{ provider }} ·
+                  }
+                  {{ 'PROFILE.CREATED' | translate: { date: (p.created_at | date: 'short') } }}
+                  ·
+                  {{ p.last_used_at
+                    ? ('PROFILE.LAST_USED' | translate: { date: (p.last_used_at | date: 'short') })
+                    : ('PROFILE.NEVER_USED' | translate) }}
+                </span>
+                <button
+                  matListItemMeta
+                  mat-icon-button
+                  [matTooltip]="'PROFILE.TOOLTIP_DELETE_PASSKEY' | translate"
+                  color="warn"
+                  (click)="removePasskey(p)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-list-item>
+            }
+          </mat-list>
+        } @else {
+          <p class="hint">{{ 'PROFILE.NO_PASSKEYS' | translate }}</p>
+        }
+
+        <div class="add-passkey-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'PROFILE.ADD_PASSKEY' | translate }}</mat-label>
+            <input matInput [(ngModel)]="newPasskeyName" [placeholder]="'PROFILE.PASSKEY_NAME_PLACEHOLDER' | translate" />
+          </mat-form-field>
+          <button mat-stroked-button type="button" [disabled]="addingPasskey()" (click)="addPasskey()">
+            <mat-icon>add</mat-icon>
+            {{ 'PROFILE.ADD_PASSKEY' | translate }}
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
 </div>

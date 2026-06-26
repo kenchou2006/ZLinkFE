@@ -1,6 +1,6 @@
 <div class="login-wrap">
   <mat-card class="login-card">
-    @if (loading()) {
+    @if (loading() || passkeysLoading()) {
       <mat-progress-bar mode="indeterminate" />
     }
     <mat-card-header>
@@ -26,10 +26,22 @@
         </mat-form-field>
 
         <button mat-flat-button color="primary" class="full-width" type="submit"
-                [disabled]="loading() || form.invalid">
+                [disabled]="loading() || passkeysLoading() || form.invalid">
           {{ 'AUTH.SIGN_IN' | translate }}
         </button>
       </form>
+
+      @if (passkeysSupported) {
+        <div class="divider">
+          <span>{{ 'AUTH.OR' | translate }}</span>
+        </div>
+
+        <button mat-stroked-button class="full-width" type="button"
+                [disabled]="loading() || passkeysLoading()" (click)="signInWithPasskey()">
+          <mat-icon>fingerprint</mat-icon>
+          {{ 'AUTH.SIGN_IN_PASSKEY' | translate }}
+        </button>
+      }
     </mat-card-content>
   </mat-card>
 </div>

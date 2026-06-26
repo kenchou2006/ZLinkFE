@@ -1,27 +1,40 @@
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
+import { findAuthenticatorById } from 'passkey-authenticator-aaguids';
+import { AaguidIconService } from '../../core/aaguid-icon.service';
+import { PasskeysService } from '../../core/api/passkeys.service';
 import { ProfileService } from '../../core/api/profile.service';
 import { AuthService } from '../../core/auth.service';
 import { apiError } from '../../shared/api-error';
+import { ConfirmDialog } from '../../shared/confirm-dialog';
+import { Passkey } from '../../core/models';
 
 @Component({
   selector: 'app-profile',
   imports: [
     ReactiveFormsModule,
+    FormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
+    MatTooltipModule,
     TranslatePipe,
+    DatePipe,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -32,8 +45,16 @@ export class Profile implements OnInit {
   private auth = inject(AuthService);
   private snack = inject(MatSnackBar);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private translate = inject(TranslateService);
+  private aaguidIcons = inject(AaguidIconService);
+  passkeys = inject(PasskeysService);
 
   saving = signal(false);
+  passkeyList = signal<Passkey[]>([]);
+  passkeyIcons = signal<Record<string, string>>({});
+  addingPasskey = signal(false);
+  newPasskeyName = '';
 
   form = this.fb.nonNullable.group({
     username: [''],
@@ -53,6 +74,73 @@ export class Profile implements OnInit {
         avatar_url: u.avatar_url ?? '',
       });
     }
+    if (this.passkeys.isSupported) this.loadPasskeys();
+  }
+
+  loadPasskeys(): void {
+    this.passkeys.list().subscribe({
+      next: (list) => {
+        this.passkeyList.set(list);
+        this.loadIcons(list);
+      },
+      error: () => {},
+    });
+  }
+
+  private loadIcons(list: Passkey[]): void {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    for (const p of list) {
+      if (!p.aaguid || this.passkeyIcons()[p.aaguid]) continue;
+      this.aaguidIcons.icon(p.aaguid, dark).then((icon) => {
+        if (icon) this.passkeyIcons.update((m) => ({ ...m, [p.aaguid]: icon }));
+      });
+    }
+  }
+
+  icon(p: Passkey): string | null {
+    return this.passkeyIcons()[p.aaguid] ?? null;
+  }
+
+  async addPasskey(): Promise<void> {
+    const name = this.newPasskeyName.trim() || 'Passkey';
+    this.addingPasskey.set(true);
+    try {
+      await this.passkeys.register(name);
+      this.newPasskeyName = '';
+      this.loadPasskeys();
+      this.snack.open('Passkey added.', undefined, { duration: 2000 });
+    } catch (e: any) {
+      if (e?.name !== 'NotAllowedError') {
+        this.snack.open(apiError(e, 'Could not add passkey.'), 'Dismiss', { duration: 4000 });
+      }
+    } finally {
+      this.addingPasskey.set(false);
+    }
+  }
+
+  removePasskey(p: Passkey): void {
+    this.dialog
+      .open(ConfirmDialog, {
+        data: {
+          title: this.translate.instant('PROFILE.DELETE_PASSKEY_TITLE'),
+          message: this.translate.instant('PROFILE.DELETE_PASSKEY_MESSAGE', { name: p.name }),
+          destructive: true,
+        },
+      })
+      .afterClosed()
+      .subscribe((ok) => {
+        if (!ok) return;
+        this.passkeys.remove(p.id).subscribe({
+          next: () => this.loadPasskeys(),
+          error: (e) => this.snack.open(apiError(e), 'Dismiss', { duration: 4000 }),
+        });
+      });
+  }
+
+  /** e.g. "Google Password Manager", or null if the authenticator isn't recognized. */
+  providerName(p: Passkey): string | null {
+    if (!p.aaguid) return null;
+    return findAuthenticatorById({ authenticatorId: p.aaguid })?.name ?? null;
   }
 
   save(): void {
