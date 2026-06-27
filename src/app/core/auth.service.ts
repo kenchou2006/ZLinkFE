@@ -19,6 +19,17 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this.user() !== null);
   readonly isSuperuser = computed(() => this.user()?.is_superuser ?? false);
 
+  constructor() {
+    // Tokens are shared via localStorage, but the `user` signal is per-tab.
+    // If another tab clears the refresh token (logout, or a failed refresh),
+    // mirror that here instead of letting this tab keep acting as logged in.
+    window.addEventListener('storage', (event) => {
+      if (event.key === REFRESH_KEY && event.newValue === null) {
+        this.user.set(null);
+      }
+    });
+  }
+
   get accessToken(): string | null {
     return localStorage.getItem(ACCESS_KEY);
   }

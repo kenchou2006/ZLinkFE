@@ -1,13 +1,28 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from 'rxjs';
+import { catchError, defer, firstValueFrom, switchMap, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
 
-// Shared refresh state so concurrent 401s wait for a single refresh call.
-let refreshing = false;
-const refreshed$ = new BehaviorSubject<string | null>(null);
+// Serializes refresh calls across concurrent requests in this tab AND across
+// other tabs (via the Web Locks API, when available) so a second 401 never
+// rotates an already-rotated refresh token — see ROTATE_REFRESH_TOKENS note
+// in auth.service.ts for why a double rotation logs everyone out.
+let pendingRefresh: Promise<string | null> | null = null;
+
+function withRefreshLock(fn: () => Promise<string | null>): Promise<string | null> {
+  const locks = (navigator as Navigator & { locks?: LockManager }).locks;
+  if (locks) {
+    return locks.request('zlink-token-refresh', () => fn()) as unknown as Promise<string | null>;
+  }
+  if (pendingRefresh) return pendingRefresh;
+  const p = fn().finally(() => {
+    pendingRefresh = null;
+  });
+  pendingRefresh = p;
+  return p;
+}
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
@@ -29,24 +44,22 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => err);
       }
 
-      if (refreshing) {
-        return refreshed$.pipe(
-          filter((t) => t !== null),
-          take(1),
-          switchMap((t) => next(withAuth(t)))
-        );
-      }
+      // Snapshot the refresh token that just failed; if another tab/request
+      // already rotated it by the time we get the lock, reuse its result
+      // instead of refreshing again with a now-blacklisted token.
+      const staleRefreshToken = auth.refreshToken;
 
-      refreshing = true;
-      refreshed$.next(null);
-      return auth.refresh().pipe(
-        switchMap((res) => {
-          refreshing = false;
-          refreshed$.next(res.access);
-          return next(withAuth(res.access));
-        }),
+      return defer(() =>
+        withRefreshLock(async () => {
+          if (auth.refreshToken !== staleRefreshToken) {
+            return auth.accessToken;
+          }
+          const res = await firstValueFrom(auth.refresh());
+          return res.access;
+        })
+      ).pipe(
+        switchMap((token) => next(withAuth(token))),
         catchError((refreshErr) => {
-          refreshing = false;
           auth.clear();
           router.navigate(['/login']);
           return throwError(() => refreshErr);
