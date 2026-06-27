@@ -56,3 +56,24 @@ body {
   }
 }
 
+// Angular Material v20 applies a clip-path on .mdc-notched-outline__notch that
+// clips the right side of the notch element, creating a visible gap (缺角) in
+// the outline border where the notch meets the trailing piece. The clip-path's
+// purpose is to ensure the label text doesn't bleed outside the notch when
+// floating, but it over-clips and cuts into the border itself.
+//
+// Fix: remove the clip-path entirely and let the notch render its borders
+// normally. The label's width is already constrained by max-width rules on
+// the notch, so the clip-path is not needed.
+.mat-mdc-form-field .mdc-notched-outline__notch {
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+}
+
+// Inside mat-dialog-content, the floated label sits ~2px lower than its
+// outline border line. Lift it a couple more pixels so the outline border
+// clears the label text.
+mat-dialog-content .mdc-floating-label--float-above {
+  transform: translateY(-37px) scale(0.75) !important;
+}
+

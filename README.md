@@ -1,6 +1,6 @@
 # ZLinkFE
 
-The admin dashboard for the [ZLink](../ZLink) URL shortener.
+The admin dashboard for the ZLink URL shortener.
 
 **ZLinkFE** is a single-page Angular + Angular Material application for managing
 short links, users, API keys, and the cache. It talks to the ZLink REST API
@@ -8,8 +8,9 @@ over JWT and is fully decoupled — build it once and point it at any ZLink
 backend.
 
 > Short-link **redirects** are handled by the Go service
-> ([ZLinkClient](../ZLinkClient)); this app only talks to the management API
-> ([ZLink](../ZLink)).
+> ([ZLinkClient](https://github.com/kenchou2006/ZLinkClient)); this app only
+> talks to the management API
+> ([ZLinkAPI](https://github.com/kenchou2006/ZLinkAPI)).
 
 ## Features
 
