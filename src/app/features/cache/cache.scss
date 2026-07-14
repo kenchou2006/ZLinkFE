@@ -1,25 +1,4 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.header > div {
-  display: flex;
-  gap: 8px;
-}
-
 .error {
   color: var(--mat-sys-error);
-}
-
-.actions-col {
-  text-align: right;
-}
-
-.empty {
-  text-align: center;
-  color: var(--mat-sys-on-surface-variant);
-  padding: 32px;
+  margin: 0 0 16px;
 }

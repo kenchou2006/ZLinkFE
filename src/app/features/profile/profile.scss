@@ -3,17 +3,11 @@
 }
 
 .mt {
-  margin-top: 16px;
+  margin-top: 24px;
 }
 
 mat-card-header {
   margin-bottom: 16px;
-}
-
-.actions {
-  margin-top: 16px;
-  display: flex;
-  justify-content: flex-end;
 }
 
 .hint {
@@ -53,11 +47,7 @@ mat-list-item [matListItemTitle],
   }
 }
 
-.disable-password-row {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid var(--mat-sys-outline-variant);
-
+.passwordless {
   .hint {
     margin: 10px 0 0;
   }

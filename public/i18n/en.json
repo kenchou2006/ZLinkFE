@@ -34,12 +34,15 @@
   },
   "LINKS": {
     "TITLE": "Links",
+    "SUBTITLE": "Create and manage the short links served by this instance.",
     "NEW_LINK": "New link",
     "SEARCH": "Search",
     "SEARCH_PLACEHOLDER": "alias or URL",
     "SHOW_EXPIRED": "Show expired ({{ count }})",
     "CLEAR_EXPIRED": "Clear expired",
-    "DELETE_SELECTED": "Delete selected ({{ count }})",
+    "SELECTED": "{{ count }} selected",
+    "CLEAR_SELECTION": "Clear selection",
+    "DELETE_SELECTED": "Delete selected",
     "COL_SHORT": "Short code",
     "COL_DEST": "Destination",
     "COL_EXPIRES": "Expires",
@@ -66,6 +69,7 @@
   },
   "USERS": {
     "TITLE": "Users",
+    "SUBTITLE": "Manage who can sign in to this admin console.",
     "NEW_USER": "New user",
     "TOTAL": "Total",
     "ACTIVE": "Active",
@@ -101,7 +105,9 @@
   "API_KEYS": {
     "TITLE": "API Keys",
     "NEW_KEY": "New key",
-    "INTRO": "API keys let external clients manage short links by sending X-API-Key: <key> to /api/links/. Keys cannot access users, cache, or key management.",
+    "INTRO": "API keys let external clients manage short links by sending",
+    "INTRO_2": "to",
+    "INTRO_3": ". Keys cannot access users, cache, or key management.",
     "SHOW_EXPIRED": "Show expired ({{ count }})",
     "CLEAR_EXPIRED": "Clear expired",
     "COL_NAME": "Name",
@@ -129,6 +135,7 @@
   },
   "CACHE": {
     "TITLE": "Cache",
+    "SUBTITLE": "Inspect and invalidate cached short-link lookups.",
     "REFRESH": "Refresh",
     "CLEAR_ALL": "Clear all",
     "COL_SHORT": "Short code",
@@ -140,6 +147,7 @@
   },
   "PROFILE": {
     "TITLE": "Profile",
+    "SUBTITLE": "Manage your account details, password, and sign-in methods.",
     "ACCOUNT": "Account",
     "USERNAME": "Username",
     "EMAIL": "Email",
@@ -151,6 +159,7 @@
     "SAVE": "Save changes",
     "PASSKEYS": "Passkeys",
     "PASSKEYS_HINT": "Sign in without a password using your device's fingerprint, face, or screen lock.",
+    "PASSKEY_NAME": "Passkey name",
     "PASSKEY_NAME_PLACEHOLDER": "e.g. MacBook Touch ID",
     "ADD_PASSKEY": "Add passkey",
     "NO_PASSKEYS": "No passkeys registered.",
@@ -161,6 +170,8 @@
     "DELETE_PASSKEY_TITLE": "Remove passkey",
     "DELETE_PASSKEY_MESSAGE": "Remove \"{{ name }}\"? You won't be able to sign in with it anymore.",
     "NOT_SUPPORTED": "Passkeys aren't supported in this browser.",
+    "UPDATE_PASSWORD": "Update password",
+    "PASSWORDLESS_AUTH": "Passwordless authentication",
     "DISABLE_PASSWORD_LOGIN": "Disable password login",
     "DISABLE_PASSWORD_LOGIN_HINT": "Require a passkey to sign in to this account.",
     "DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY": "Add a passkey first to enable this."

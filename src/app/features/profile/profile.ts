@@ -52,7 +52,8 @@ export class Profile implements OnInit {
   private aaguidIcons = inject(AaguidIconService);
   passkeys = inject(PasskeysService);
 
-  saving = signal(false);
+  savingAccount = signal(false);
+  savingPassword = signal(false);
   passkeyList = signal<Passkey[]>([]);
   passkeyIcons = signal<Record<string, string>>({});
   addingPasskey = signal(false);
@@ -60,10 +61,13 @@ export class Profile implements OnInit {
   togglingPasswordLogin = signal(false);
   newPasskeyName = '';
 
-  form = this.fb.nonNullable.group({
+  accountForm = this.fb.nonNullable.group({
     username: [''],
     email: [''],
     avatar_url: [''],
+  });
+
+  passwordForm = this.fb.nonNullable.group({
     current_password: [''],
     new_password: [''],
     confirm_password: [''],
@@ -72,7 +76,7 @@ export class Profile implements OnInit {
   ngOnInit(): void {
     const u = this.auth.user();
     if (u) {
-      this.form.patchValue({
+      this.accountForm.patchValue({
         username: u.username,
         email: u.email,
         avatar_url: u.avatar_url ?? '',
@@ -175,25 +179,38 @@ export class Profile implements OnInit {
     return findAuthenticatorById({ authenticatorId: p.aaguid })?.name ?? null;
   }
 
-  save(): void {
-    this.saving.set(true);
-    const payload = this.form.getRawValue();
-    this.profile.update(payload).subscribe({
+  saveAccount(): void {
+    this.savingAccount.set(true);
+    this.profile.update(this.accountForm.getRawValue()).subscribe({
       next: (res) => {
-        this.saving.set(false);
+        this.savingAccount.set(false);
+        this.auth.user.set(res.user);
+        this.snack.open('Profile updated.', undefined, { duration: 2000 });
+      },
+      error: (e) => {
+        this.savingAccount.set(false);
+        this.snack.open(apiError(e, 'Could not update profile.'), 'Dismiss', { duration: 4000 });
+      },
+    });
+  }
+
+  changePassword(): void {
+    this.savingPassword.set(true);
+    this.profile.update(this.passwordForm.getRawValue()).subscribe({
+      next: (res) => {
+        this.savingPassword.set(false);
         this.auth.user.set(res.user);
         if (res.password_changed) {
           this.snack.open('Password changed. Please sign in again.', undefined, { duration: 3000 });
           this.auth.clear();
           this.router.navigate(['/login']);
         } else {
-          this.snack.open('Profile updated.', undefined, { duration: 2000 });
-          this.form.patchValue({ current_password: '', new_password: '', confirm_password: '' });
+          this.passwordForm.reset();
         }
       },
       error: (e) => {
-        this.saving.set(false);
-        this.snack.open(apiError(e, 'Could not update profile.'), 'Dismiss', { duration: 4000 });
+        this.savingPassword.set(false);
+        this.snack.open(apiError(e, 'Could not change password.'), 'Dismiss', { duration: 4000 });
       },
     });
   }

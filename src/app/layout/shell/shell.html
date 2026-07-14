@@ -22,6 +22,7 @@
       }
 
       @if (manageItems().length) {
+        <mat-divider class="nav-divider" />
         <a mat-list-item (click)="toggleManage()" class="group-toggle">
           <mat-icon matListItemIcon>tune</mat-icon>
           <span matListItemTitle>{{ 'SHELL.MANAGE' | translate }}</span>

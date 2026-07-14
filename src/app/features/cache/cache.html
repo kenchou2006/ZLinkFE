@@ -1,7 +1,10 @@
 <div class="page">
-  <div class="header">
-    <h1>{{ 'CACHE.TITLE' | translate }}</h1>
+  <header class="page-header">
     <div>
+      <h1>{{ 'CACHE.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'CACHE.SUBTITLE' | translate }}</p>
+    </div>
+    <div class="page-header-actions">
       <button mat-stroked-button (click)="load()">
         <mat-icon>refresh</mat-icon>
         {{ 'CACHE.REFRESH' | translate }}
@@ -11,46 +14,48 @@
         {{ 'CACHE.CLEAR_ALL' | translate }}
       </button>
     </div>
-  </div>
-
-  @if (loading()) {
-    <mat-progress-bar mode="indeterminate" />
-  }
+  </header>
 
   @if (error()) {
     <p class="error">{{ error() }}</p>
   }
 
-  <table mat-table [dataSource]="data()" class="full-width">
-    <ng-container matColumnDef="display_key">
-      <th mat-header-cell *matHeaderCellDef>{{ 'CACHE.COL_SHORT' | translate }}</th>
-      <td mat-cell *matCellDef="let k">{{ k.display_key }}</td>
-    </ng-container>
+  <div class="table-card">
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
 
-    <ng-container matColumnDef="ttl">
-      <th mat-header-cell *matHeaderCellDef>{{ 'CACHE.COL_TTL' | translate }}</th>
-      <td mat-cell *matCellDef="let k">{{ ttlLabel(k.ttl) }}</td>
-    </ng-container>
+    <table mat-table [dataSource]="data()" class="full-width">
+      <ng-container matColumnDef="display_key">
+        <th mat-header-cell *matHeaderCellDef>{{ 'CACHE.COL_SHORT' | translate }}</th>
+        <td mat-cell *matCellDef="let k" class="cell-primary">{{ k.display_key }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef>{{ 'CACHE.COL_TYPE' | translate }}</th>
-      <td mat-cell *matCellDef="let k">{{ k.type }}</td>
-    </ng-container>
+      <ng-container matColumnDef="ttl">
+        <th mat-header-cell *matHeaderCellDef>{{ 'CACHE.COL_TTL' | translate }}</th>
+        <td mat-cell *matCellDef="let k" class="cell-secondary">{{ ttlLabel(k.ttl) }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef class="actions-col">{{ 'CACHE.COL_ACTIONS' | translate }}</th>
-      <td mat-cell *matCellDef="let k" class="actions-col">
-        <button mat-icon-button color="warn" [matTooltip]="'CACHE.TOOLTIP_DELETE' | translate" (click)="deleteKey(k)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>{{ 'CACHE.COL_TYPE' | translate }}</th>
+        <td mat-cell *matCellDef="let k" class="cell-secondary">{{ k.type }}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns"></tr>
-  </table>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-col">{{ 'CACHE.COL_ACTIONS' | translate }}</th>
+        <td mat-cell *matCellDef="let k" class="actions-col">
+          <button mat-icon-button color="warn" [matTooltip]="'CACHE.TOOLTIP_DELETE' | translate" (click)="deleteKey(k)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-  @if (!loading() && !error() && data().length === 0) {
-    <p class="empty">{{ 'CACHE.NO_CACHE' | translate }}</p>
-  }
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    </table>
+
+    @if (!loading() && !error() && data().length === 0) {
+      <p class="empty">{{ 'CACHE.NO_CACHE' | translate }}</p>
+    }
+  </div>
 </div>

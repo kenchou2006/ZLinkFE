@@ -19,6 +19,12 @@
   padding: 16px 20px;
   font-size: 1.25rem;
   font-weight: 700;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  margin-bottom: 8px;
+}
+
+.nav-divider {
+  margin: 8px 16px;
 }
 
 .topbar {
@@ -38,6 +44,13 @@
 
 .group-toggle {
   cursor: pointer;
+
+  // Render the group header as a muted section label rather than a peer of
+  // the navigation links.
+  --mat-list-list-item-label-text-size: 0.8125rem;
+  --mat-list-list-item-label-text-weight: 500;
+  --mat-list-list-item-label-text-color: var(--mat-sys-on-surface-variant);
+  --mat-list-list-item-leading-icon-color: var(--mat-sys-on-surface-variant);
 }
 
 // The list "meta" slot applies the small Roboto text style, which breaks the

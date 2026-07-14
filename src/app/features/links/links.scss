@@ -1,20 +1,5 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
 .search {
-  width: 100%;
+  flex: 1 1 220px;
   max-width: 360px;
 }
 
@@ -29,17 +14,6 @@
   white-space: nowrap;
 }
 
-.actions-col {
-  text-align: right;
-  white-space: nowrap;
-}
-
 .expired {
   color: var(--mat-sys-error);
-}
-
-.empty {
-  text-align: center;
-  color: var(--mat-sys-on-surface-variant);
-  padding: 32px;
 }

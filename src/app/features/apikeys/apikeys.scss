@@ -1,38 +1,7 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.intro {
-  color: var(--mat-sys-on-surface-variant);
-  max-width: 720px;
-}
-
-.intro code,
+.page-subtitle code,
 table code {
   background: var(--mat-sys-surface-container-high);
   padding: 1px 5px;
   border-radius: 4px;
   font-size: 0.85em;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
-.actions-col {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.empty {
-  text-align: center;
-  color: var(--mat-sys-on-surface-variant);
-  padding: 32px;
 }

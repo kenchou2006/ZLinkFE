@@ -1,8 +1,13 @@
 <div class="page narrow">
-  <h1>{{ 'PROFILE.TITLE' | translate }}</h1>
+  <header class="page-header">
+    <div>
+      <h1>{{ 'PROFILE.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'PROFILE.SUBTITLE' | translate }}</p>
+    </div>
+  </header>
 
-  <form [formGroup]="form" (ngSubmit)="save()">
-    <mat-card>
+  <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+    <mat-card appearance="outlined">
       <mat-card-header><mat-card-title>{{ 'PROFILE.ACCOUNT' | translate }}</mat-card-title></mat-card-header>
       <mat-card-content>
         <mat-form-field appearance="outline" class="full-width">
@@ -18,9 +23,16 @@
           <input matInput formControlName="avatar_url" />
         </mat-form-field>
       </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-flat-button color="primary" type="submit" [disabled]="savingAccount()">
+          {{ 'PROFILE.SAVE' | translate }}
+        </button>
+      </mat-card-actions>
     </mat-card>
+  </form>
 
-    <mat-card class="mt">
+  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+    <mat-card appearance="outlined" class="mt">
       <mat-card-header><mat-card-title>{{ 'PROFILE.CHANGE_PASSWORD' | translate }}</mat-card-title></mat-card-header>
       <mat-card-content>
         <mat-form-field appearance="outline" class="full-width">
@@ -36,15 +48,21 @@
           <input matInput type="password" formControlName="confirm_password" autocomplete="new-password" />
         </mat-form-field>
       </mat-card-content>
+      <mat-card-actions align="end">
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="savingPassword() || !passwordForm.getRawValue().new_password"
+        >
+          {{ 'PROFILE.UPDATE_PASSWORD' | translate }}
+        </button>
+      </mat-card-actions>
     </mat-card>
-
-    <div class="actions">
-      <button mat-flat-button color="primary" type="submit" [disabled]="saving()">{{ 'PROFILE.SAVE' | translate }}</button>
-    </div>
   </form>
 
   @if (passkeys.isSupported) {
-    <mat-card class="mt">
+    <mat-card appearance="outlined" class="mt">
       <mat-card-header><mat-card-title>{{ 'PROFILE.PASSKEYS' | translate }}</mat-card-title></mat-card-header>
       <mat-card-content>
         <p class="hint">{{ 'PROFILE.PASSKEYS_HINT' | translate }}</p>
@@ -80,7 +98,7 @@
 
         <div class="add-passkey-row">
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>{{ 'PROFILE.ADD_PASSKEY' | translate }}</mat-label>
+            <mat-label>{{ 'PROFILE.PASSKEY_NAME' | translate }}</mat-label>
             <input matInput [(ngModel)]="newPasskeyName" [placeholder]="'PROFILE.PASSKEY_NAME_PLACEHOLDER' | translate" />
           </mat-form-field>
           <button mat-stroked-button type="button" [disabled]="addingPasskey()" (click)="addPasskey()">
@@ -88,21 +106,24 @@
             {{ 'PROFILE.ADD_PASSKEY' | translate }}
           </button>
         </div>
+      </mat-card-content>
+    </mat-card>
 
-        <div class="disable-password-row">
-          <mat-slide-toggle
-            [checked]="passwordLoginDisabled()"
-            [disabled]="togglingPasswordLogin() || (!passwordLoginDisabled() && !passkeyList().length)"
-            (change)="togglePasswordLogin($event.checked)"
-          >
-            {{ 'PROFILE.DISABLE_PASSWORD_LOGIN' | translate }}
-          </mat-slide-toggle>
-          <p class="hint">
-            {{ (passkeyList().length || passwordLoginDisabled())
-              ? ('PROFILE.DISABLE_PASSWORD_LOGIN_HINT' | translate)
-              : ('PROFILE.DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY' | translate) }}
-          </p>
-        </div>
+    <mat-card appearance="outlined" class="mt passwordless">
+      <mat-card-header><mat-card-title>{{ 'PROFILE.PASSWORDLESS_AUTH' | translate }}</mat-card-title></mat-card-header>
+      <mat-card-content>
+        <mat-slide-toggle
+          [checked]="passwordLoginDisabled()"
+          [disabled]="togglingPasswordLogin() || (!passwordLoginDisabled() && !passkeyList().length)"
+          (change)="togglePasswordLogin($event.checked)"
+        >
+          {{ 'PROFILE.DISABLE_PASSWORD_LOGIN' | translate }}
+        </mat-slide-toggle>
+        <p class="hint">
+          {{ (passkeyList().length || passwordLoginDisabled())
+            ? ('PROFILE.DISABLE_PASSWORD_LOGIN_HINT' | translate)
+            : ('PROFILE.DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY' | translate) }}
+        </p>
       </mat-card-content>
     </mat-card>
   }

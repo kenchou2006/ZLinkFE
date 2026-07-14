@@ -106,6 +106,10 @@ export class Links implements OnInit {
     }
   }
 
+  clearSelection(): void {
+    this.selected.set(new Set());
+  }
+
   copy(link: Link): void {
     navigator.clipboard?.writeText(link.short_url);
     this.snack.open('Short URL copied.', undefined, { duration: 1500 });

@@ -30,7 +30,110 @@ body {
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px 16px 48px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Page header: "h1 + subtitle" on the left, primary page actions on the right.
+// Establishes the top level of the page hierarchy; blocks below it follow a
+// 24px vertical rhythm.
+// ---------------------------------------------------------------------------
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-width: 720px;
+}
+
+.page-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+// ---------------------------------------------------------------------------
+// Table card: wraps a data table and its toolbar in one contained surface so
+// the data area reads as a single visual unit instead of blending into the
+// page background. Used by the links / users / api-keys / cache pages.
+// ---------------------------------------------------------------------------
+.table-card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-low);
+  overflow-x: auto;
+
+  --mat-table-background-color: transparent;
+
+  th.mat-mdc-header-cell {
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .empty {
+    margin: 0;
+  }
+}
+
+// Filter row that sits inside a .table-card, above the table.
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  min-height: 64px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+// Swapped in for the filter toolbar while rows are selected: the whole bar
+// becomes the bulk-action context instead of buttons popping into the filters.
+.selection-bar {
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.selection-count {
+  font-weight: 500;
+}
+
+// Table cell hierarchy: the row's key identifier vs. secondary metadata
+// (timestamps, TTLs) that shouldn't compete with it.
+.cell-primary {
+  font-weight: 500;
+}
+
+td.cell-secondary {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.8125rem;
+}
+
+.empty {
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+  padding: 32px;
+}
+
+.actions-col {
+  text-align: right;
+  white-space: nowrap;
 }
 
 // Shared dialog form layout: used by link-dialog, apikey-dialog, user-dialog.

@@ -34,12 +34,15 @@
   },
   "LINKS": {
     "TITLE": "短網址",
+    "SUBTITLE": "建立與管理此站台提供的短網址。",
     "NEW_LINK": "新增短網址",
     "SEARCH": "搜尋",
     "SEARCH_PLACEHOLDER": "別名或網址",
     "SHOW_EXPIRED": "顯示已過期 ({{ count }})",
     "CLEAR_EXPIRED": "清除已過期",
-    "DELETE_SELECTED": "刪除已選取 ({{ count }})",
+    "SELECTED": "已選取 {{ count }} 項",
+    "CLEAR_SELECTION": "取消選取",
+    "DELETE_SELECTED": "刪除已選取",
     "COL_SHORT": "短代碼",
     "COL_DEST": "目標網址",
     "COL_EXPIRES": "到期時間",
@@ -66,6 +69,7 @@
   },
   "USERS": {
     "TITLE": "使用者管理",
+    "SUBTITLE": "管理可登入此後台的帳號。",
     "NEW_USER": "新增使用者",
     "TOTAL": "總計",
     "ACTIVE": "啟用",
@@ -101,7 +105,9 @@
   "API_KEYS": {
     "TITLE": "API 金鑰",
     "NEW_KEY": "新增金鑰",
-    "INTRO": "API 金鑰允許外部系統透過傳送 X-API-Key: <key> 標頭至 /api/links/ 來管理短網址。金鑰無法存取使用者、快取或金鑰管理等功能。",
+    "INTRO": "API 金鑰允許外部系統透過傳送",
+    "INTRO_2": "標頭至",
+    "INTRO_3": "，用來管理短網址。金鑰無法存取使用者、快取或金鑰管理等功能。",
     "SHOW_EXPIRED": "顯示已過期 ({{ count }})",
     "CLEAR_EXPIRED": "清除已過期",
     "COL_NAME": "名稱",
@@ -129,6 +135,7 @@
   },
   "CACHE": {
     "TITLE": "快取管理",
+    "SUBTITLE": "檢視並清除短網址查詢快取。",
     "REFRESH": "重新整理",
     "CLEAR_ALL": "全部清除",
     "COL_SHORT": "短代碼",
@@ -140,6 +147,7 @@
   },
   "PROFILE": {
     "TITLE": "個人資料",
+    "SUBTITLE": "管理您的帳號資料、密碼與登入方式。",
     "ACCOUNT": "帳號設定",
     "USERNAME": "帳號",
     "EMAIL": "信箱",
@@ -151,6 +159,7 @@
     "SAVE": "儲存變更",
     "PASSKEYS": "Passkey",
     "PASSKEYS_HINT": "使用裝置的指紋、臉部辨識或螢幕鎖定方式登入，不需輸入密碼。",
+    "PASSKEY_NAME": "Passkey 名稱",
     "PASSKEY_NAME_PLACEHOLDER": "例如：MacBook Touch ID",
     "ADD_PASSKEY": "新增 Passkey",
     "NO_PASSKEYS": "尚未註冊任何 Passkey。",
@@ -161,6 +170,8 @@
     "DELETE_PASSKEY_TITLE": "移除 Passkey",
     "DELETE_PASSKEY_MESSAGE": "移除「{{ name }}」？移除後將無法再用它登入。",
     "NOT_SUPPORTED": "此瀏覽器不支援 Passkey。",
+    "UPDATE_PASSWORD": "更新密碼",
+    "PASSWORDLESS_AUTH": "無密碼驗證",
     "DISABLE_PASSWORD_LOGIN": "停用密碼登入",
     "DISABLE_PASSWORD_LOGIN_HINT": "登入此帳號時將強制要求使用 Passkey。",
     "DISABLE_PASSWORD_LOGIN_NEEDS_PASSKEY": "請先新增一個 Passkey 才能啟用此選項。"
